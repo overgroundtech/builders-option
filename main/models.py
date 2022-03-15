@@ -36,7 +36,20 @@ class ProductImages(models.Model):
         return f'{self.product.name} image'
 
 
+class BillingAddress(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    county = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+
+    def __str__(self):
+        return f'{self.user.username}\'billing address'
+
+
 class Order(models.Model):
+    billing_address = models.ForeignKey(BillingAddress, on_delete=models.DO_NOTHING)
     customer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     order_id = models.CharField(default=uuid.uuid4(), max_length=100)
     total_price = models.FloatField()
