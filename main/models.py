@@ -10,6 +10,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_url(self):
+        return f'{self.name}-{self.id}'
+
 
 class Product(models.Model):
     categories = models.ManyToManyField(Category)
