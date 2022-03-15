@@ -27,6 +27,10 @@ class Product(models.Model):
     def get_url(self):
         return f'{self.name}-{self.id}'
 
+    def display_image(self):
+        image = ProductImages.objects.filter(product_id=self.id)[0]
+        return image.image.url
+
 
 class ProductImages(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
