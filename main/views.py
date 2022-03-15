@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
-
+from .models import *
 
 
 def index(request):
+    prods = Product.objects.all()
+    cats = Category.objects.all()
+
+
     context = {}
     return render(request, 'main/index.html', context)
 
