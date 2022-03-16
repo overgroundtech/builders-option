@@ -1,4 +1,3 @@
-import requests
 from django.shortcuts import redirect, HttpResponseRedirect
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.messages import info, error
@@ -27,7 +26,24 @@ def sign_in(request):
 
 
 def sign_up(request):
-    return None
+    if request.POST:
+        username = request.POST["register-username"]
+        email = request.POST["register-email"]
+        password = request.POST["register-password"]
+        password1 = request.POST["register-password1"]
+
+        if password == password1:
+            user = get_user_model().objects.create_user(
+                username=username,
+                email=email
+            )
+            user.set_password(password)
+            user.save()
+            info(request, 'registered successfully')
+            login(request, user)
+        else:
+            error(request, 'passwords did not match')
+    return redirect('home')
 
 
 def sign_out(request):
