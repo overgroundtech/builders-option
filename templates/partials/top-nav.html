@@ -1,0 +1,29 @@
+{% load static %}
+
+<header class="header header-intro-clearance header-4">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-left">
+                    <a href="tel:#"><i class="icon-phone"></i>Call: +254 7xx xxx xxx</a>
+                </div><!-- End .header-left -->
+
+                <div class="header-right">
+
+                    <ul class="top-menu">
+                        <li>
+                            <a href="#">Links</a>
+                            <ul>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'sign-out' %}">Sign Out</a></li>
+                                    <li><a href="#">My Account</a> </li>
+                                {% else %}
+                                    <li><a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul><!-- End .top-menu -->
+                </div><!-- End .header-right -->
+
+            </div><!-- End .container -->
+        </div><!-- End .header-top -->
+</header>

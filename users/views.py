@@ -1,13 +1,10 @@
 import requests
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import redirect, HttpResponseRedirect
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.messages import info, error
 
 
 def sign_in(request):
-    cache = {}
-    if request.method == 'GET':
-        cache['next'] = request.GET.get('next', None)
 
     if request.method == "POST":
         username = request.POST['singin-email']
@@ -19,14 +16,14 @@ def sign_in(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(user)
-            next_url = cache['next']
+            login(request, user)
+            next_url = request.GET.get('next')
             info(request, f'login is as {user.username}')
-            return HttpResponseRedirect(next_url) if next_url else HttpResponseRedirect(request.GET.get('next', None))
+            return HttpResponseRedirect(next_url) if next_url is not None else redirect('home')
         else:
             error(request, 'login failed')
 
-    return HttpResponseRedirect(request.path)
+    return redirect('home')
 
 
 def sign_up(request):
@@ -34,4 +31,5 @@ def sign_up(request):
 
 
 def sign_out(request):
-    pass
+    logout(request)
+    return redirect('home')
