@@ -33,10 +33,10 @@ class Product(models.Model):
     def display_image(self):
         try:
             image = ProductImages.objects.filter(product_id=self.id)[0]
+            return image.image.url
         except Exception as e:
-            raise Exception('no images yet')
-
-        return image.image.url
+            print(str(e))
+        return 'media/category-images/noimg.png'
 
 
 class ProductImages(models.Model):
