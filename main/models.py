@@ -31,7 +31,11 @@ class Product(models.Model):
         return f'{self.name}-{self.id}'
 
     def display_image(self):
-        image = ProductImages.objects.filter(product_id=self.id)[0]
+        try:
+            image = ProductImages.objects.filter(product_id=self.id)[0]
+        except Exception as e:
+            raise Exception('no images yet')
+
         return image.image.url
 
 

@@ -95,6 +95,20 @@
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-    <!-- Mobile Menu -->
+    <div class="container for-you">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">Featured Products</h2><!-- End .title -->
+                    </div><!-- End .heading-left -->
+                </div><!-- End .heading -->
+
+                <div class="products">
+                    <div class="row justify-content-center">
+                        {% for product in products %}
+                            {% include 'partials/product-card.html' %}
+                        {% endfor %}
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div>
 
 {% endblock %}

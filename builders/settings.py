@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w4mv%q8uyrhs3e%5_fezgqzyp%@frojp)n#ckx0u6brq86i#-!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.ngrok.io']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cart',
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
+    'django_summernote'
 ]
 
 MIDDLEWARE = [
