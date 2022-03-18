@@ -52,4 +52,10 @@ def add_item(request, prod_id, quantity):
     return redirect(request.GET.get('next'))
 
 
-def remove_item
+def remove_item(request, prod_id):
+    cart = Cart(request)
+    prod = Product.objects.get(pk=prod_id)
+    cart.remove(product=prod)
+    info(request, 'item was remove from cart')
+    return redirect(request.GET.get('next'))
+
