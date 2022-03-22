@@ -59,7 +59,7 @@
                                         <img src="{{ item.product.display_image }}" alt="product">
                                     </a>
                                 </figure>
-                                <a href="{% url 'remove-item' product.id %}?next={{ request.path }}" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                                <a href="{% url 'remove-item' item.product.id %}?next={{ request.path }}" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                             </div><!-- End .product -->
                             {% endfor %}
 

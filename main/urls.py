@@ -11,7 +11,7 @@ urlpatterns = [
     # cart urls
     path('cart', views.cart_detail, name="cart"),
     path('cart/add_item/<str:prod_id>/<int:quantity>', views.add_item, name="add-item"),
-    path('cart/remove_item/<str:prod_id>', views.remove_item, name="remove-item"),
+    path('cart/remove_item/<int:prod_id>/', views.remove_item, name="remove-item"),
 
     path('checkout', views.checkout, name="checkout")
 ]
