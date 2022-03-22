@@ -1,0 +1,14 @@
+{% load static %}
+
+{% for message in messages %}
+<div class="alert alert-info alert-dismissible" style="
+    position:fixed;
+    top: 80vh;
+    left: 0px;
+    width: 50%;
+    z-index:9999;
+    border-radius:0px">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+     {{ message }}.
+</div>
+{% endfor %}
