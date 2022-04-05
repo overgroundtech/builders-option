@@ -28,8 +28,27 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-def products(request):
-    return HttpResponse('products')
+def products(request, product_url):
+    pk = product_url[(product_url.rindex('~')+1):]
+    prod = Product.objects.get(pk=pk)
+    images = ProductImages.objects.filter(product=pk)
+
+    cats = Category.objects.all()
+    cart = Cart(request)
+
+    context = {
+        "images": images,
+        "product": prod,
+        "cart": cart,
+        "categories": cats
+    }
+
+    if request.method == "POST":
+        quantity = request.POST['qty']
+        cart.add(product=prod, quantity=quantity, unit_price=prod.price)
+        info(request, 'product was added to cart!')
+        return render(request, 'main/product-detail.html', context)
+    return render(request, 'main/product-detail.html', context)
 
 
 def categories(request):

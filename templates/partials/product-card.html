@@ -17,7 +17,7 @@
             <div class="product-cat">
                 <a href="#">{{ product.category }}</a>
             </div><!-- End .product-cat -->
-            <h3 class="product-title"><a href="product.html">{{ product }}</a></h3><!-- End .product-title -->
+            <h3 class="product-title"><a href="{% url 'products' product.get_url %}">{{ product }}</a></h3><!-- End .product-title -->
             <div class="product-price">
                 <span class="out-price">ksh {{ product.price }}</span>
             </div><!-- End .product-price -->

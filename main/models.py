@@ -28,7 +28,8 @@ class Product(models.Model):
         return self.name
 
     def get_url(self):
-        return f'{self.name}-{self.id}'
+        name = self.name.replace(' ', '-')
+        return f'{name}~{self.id}'
 
     def display_image(self):
         try:
