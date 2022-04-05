@@ -78,3 +78,19 @@ def remove_item(request, prod_id):
     info(request, 'item was remove from cart')
     return redirect(request.GET.get('next'))
 
+
+def search(request):
+    if request.POST:
+        keyword = request.POST['keyword']
+        results = []
+        try:
+            if keyword is not None:
+                prods = Product.objects.filter(name__contains=keyword)
+                cates = Product.objects.filter(categories= Category.objects.filter(name__contains=keyword))
+
+                results.append(prods)
+                results.append(cates)
+            else:
+                prods = "No results found !"
+        except ValueError as e:
+            print(str(e))
