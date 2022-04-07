@@ -59,7 +59,9 @@ def categories(request):
 
 
 def cart_detail(request):
-    return HttpResponse('cart detail')
+
+    context = {}
+    return render(request, 'main/cart.html', context)
 
 
 def checkout(request):
