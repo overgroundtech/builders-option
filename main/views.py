@@ -28,17 +28,20 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-def products(request, product_url):
+def product_detail(request, product_url):
     pk = product_url[(product_url.rindex('~')+1):]
     prod = Product.objects.get(pk=pk)
     images = ProductImages.objects.filter(product=pk)
+    similar_products = Product.objects.filter(categories__in=prod.categories.all())
+    similar_products = list(set(similar_products))
 
     cats = Category.objects.all()
     cart = Cart(request)
-
+# TODO add reviews functionality and social media share
     context = {
         "images": images,
         "product": prod,
+        "similar": similar_products,
         "cart": cart,
         "categories": cats
     }
@@ -86,7 +89,7 @@ def search(request):
         try:
             if keyword is not None:
                 prods = Product.objects.filter(name__contains=keyword)
-                cates = Product.objects.filter(categories= Category.objects.filter(name__contains=keyword))
+                cates = Product.objects.filter(categories=Category.objects.filter(name__contains=keyword))
 
                 results.append(prods)
                 results.append(cates)
