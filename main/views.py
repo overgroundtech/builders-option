@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from cart.cart import Cart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import *
+from django.db.models import Q
 from django.contrib.messages import info, error
+from .models import *
 
 
 def index(request):
@@ -32,8 +33,7 @@ def product_detail(request, product_url):
     pk = product_url[(product_url.rindex('~')+1):]
     prod = Product.objects.get(pk=pk)
     images = ProductImages.objects.filter(product=pk)
-    similar_products = Product.objects.filter(categories__in=prod.categories.all())
-    similar_products = list(set(similar_products))
+    similar_products = Product.objects.filter(categories__in=prod.categories.all()).distinct()
 
     cats = Category.objects.all()
     cart = Cart(request)
@@ -91,17 +91,30 @@ def remove_item(request, prod_id):
 
 
 def search(request):
-    if request.POST:
-        keyword = request.POST['keyword']
-        results = []
-        try:
-            if keyword is not None:
-                prods = Product.objects.filter(name__contains=keyword)
-                cates = Product.objects.filter(categories=Category.objects.filter(name__contains=keyword))
+    cats = Category.objects.all()
+    cart = Cart(request)
 
-                results.append(prods)
-                results.append(cates)
-            else:
-                prods = "No results found !"
-        except ValueError as e:
-            print(str(e))
+    context = {
+        "cart": cart,
+        "categories": cats,
+    }
+
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        prev_path = request.META.get('HTTP_REFERER')
+        if (query == '' or query is None) and prev_path is not None:
+            return redirect(prev_path)
+
+        if query is not None:
+            lookups = Q(name__icontains=query) | Q(description__icontains=query)
+            results = Product.objects.filter(lookups).distinct()
+            context['query'] = query
+            context["results"] = results
+            return render(request, 'main/search.html', context)
+        else:
+            return render(request, 'main/search.html', context)
+    else:
+        return render(request, 'main/search.html', context)
+
+
+
