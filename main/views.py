@@ -60,12 +60,18 @@ def categories(request):
 
 def cart_detail(request):
 
-    context = {}
+    cats = Category.objects.all()
+    cart = Cart(request)
+#   Todo create ajax request for updating cart
+    context = {
+        "cart": cart,
+        "categories": cats,
+    }
     return render(request, 'main/cart.html', context)
 
 
 def checkout(request):
-    return HttpResponse('checkout')
+    return render(request, 'main/')
 
 
 def add_item(request, prod_id, quantity):
