@@ -1,0 +1,40 @@
+
+<nav aria-label="Page navigation">
+    {% if products.has_other_pages %}
+    <ul class="pagination">
+        {% if products.has_previous %}
+        <li class="page-item">
+            <a class="page-link page-link-prev" href="?page={{ products.previous_page_number }}" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+            </a>
+        </li>
+        {% endif %}
+        {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+            {% else %}
+             <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if products.has_next %}
+        <li class="page-item">
+            <a class="page-link page-link-next" href="?page={{ products.next_page_number }}" aria-label="Next">
+                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link page-link-next" href="#" aria-label="Next">
+                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+</nav>
