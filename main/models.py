@@ -11,7 +11,7 @@ class Category(models.Model):
         return self.name
 
     def get_url(self):
-        return f'{self.name}-{self.id}'
+        return f'{self.name}~{self.id}'
 
 
 class Product(models.Model):

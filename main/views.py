@@ -54,8 +54,30 @@ def product_detail(request, product_url):
     return render(request, 'main/product-detail.html', context)
 
 
-def categories(request):
-    return HttpResponse('categories')
+def categories(request, category_url):
+    pk = category_url[(category_url.rindex('~') + 1):]
+    category = Category.objects.get(pk=pk)
+
+    prod_list = Product.objects.filter(categories__in=[category]).distinct()
+    paginator = Paginator(prod_list, 12)
+    page = request.GET.get('page', 1)
+
+    try:
+        prods = paginator.page(page)
+    except PageNotAnInteger:
+        prods = paginator.page(1)
+    except EmptyPage:
+        prods = paginator.page(paginator.num_pages)
+
+    cart = Cart(request)
+    cats = Category.objects.all()
+    context = {
+        "cart": cart,
+        "categories": cats,
+        "products": prods,
+        "category": category
+    }
+    return render(request, 'main/category.html', context)
 
 
 def cart_detail(request):
