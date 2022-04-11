@@ -108,8 +108,17 @@ def search(request):
         if query is not None:
             lookups = Q(name__icontains=query) | Q(description__icontains=query)
             results = Product.objects.filter(lookups).distinct()
+            # paginator = Paginator(results, 1)
+            # page = request.GET.get('page', 1)
+            # try:
+            #     prods = paginator.page(page)
+            # except PageNotAnInteger:
+            #     prods = paginator.page(1)
+            # except EmptyPage:
+            #     prods = paginator.page(paginator.num_pages)
+
             context['query'] = query
-            context["results"] = results
+            context["products"] = results
             return render(request, 'main/search.html', context)
         else:
             return render(request, 'main/search.html', context)

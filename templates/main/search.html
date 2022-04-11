@@ -7,7 +7,7 @@
             <div class="page-header text-center" style="background-image: url({% static 'assets/images/page-header-bg.jpg' %})">
                 <div class="container">
                     <h1 class="page-title">
-                            {% if results %}
+                            {% if products %}
                                 Results for {{ query }}
                             {% else %}
                                 No results for {{ query }}
@@ -28,11 +28,14 @@
                 <div class="container">
                     <div class="products">
                         <div class="row">
-                            {% for product in results %}
+                            {% for product in products %}
                                 {% include 'partials/product-card.html' %}
                             {% endfor %}
                         </div><!-- End .row -->
 
+{#                        <div>#}
+{#                            {% include 'partials/pagination.html' %}#}
+{#                        </div>#}
 
                     </div><!-- End .products -->
 
