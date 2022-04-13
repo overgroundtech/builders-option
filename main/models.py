@@ -21,6 +21,7 @@ class Product(models.Model):
     discount_price = models.FloatField()
     in_stock = models.IntegerField()
     details = models.TextField()
+    on_deals = models.BooleanField(default=False, blank=True, null=True)
     description = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 

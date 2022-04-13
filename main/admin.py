@@ -19,14 +19,14 @@ class ProductImagesAdmin(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(SummernoteModelAdmin):
-    list_display = ('name', 'price', 'in_stock', 'created_on')
+    list_display = ('name', 'price', 'on_deals', 'in_stock', 'created_on')
     list_filter = ('categories',)
     ordering = ('created_on',)
     summernote_fields = '__all__'
     fieldsets = (
         (None, {
-            'fields': ('name', ('price', 'discount_price'), ('in_stock',))
-        }),(
+            'fields': ('name', ('price', 'discount_price'), ('in_stock', 'on_deals'))
+        }), (
           "Select Product Category", {
               "fields": ('categories',)
           }

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponse
 from cart.cart import Cart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
@@ -9,6 +8,7 @@ from .models import *
 
 def index(request):
     products_list = Product.objects.all()
+    on_deals = Product.objects.filter(on_deals=True)
     cats = Category.objects.all()
     cart = Cart(request)
 
@@ -24,7 +24,8 @@ def index(request):
     context = {
         "products": prods,
         "categories": cats,
-        "cart": cart
+        "cart": cart,
+        "on_deals": on_deals
     }
     return render(request, 'main/index.html', context)
 
