@@ -6,7 +6,7 @@
 
 
         <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        	<div class="page-header text-center" style="background-image: url({% static 'assets/images/page-header-bg.jpg' %})">
         		<div class="container">
         			<h1 class="page-title">Checkout<span>Shop</span></h1>
         		</div><!-- End .container -->
@@ -14,8 +14,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Checkout</li>
                     </ol>
                 </div><!-- End .container -->
@@ -42,13 +41,6 @@
 		                					</div><!-- End .col-sm-6 -->
 		                				</div><!-- End .row -->
 
-	            						<label>Company Name (Optional)</label>
-	            						<input type="text" class="form-control">
-
-	            						<label>Country *</label>
-	            						<input type="text" class="form-control" required>
-
-
 	            						<div class="row">
 		                					<div class="col-sm-6">
 		                						<label>Town / City *</label>
@@ -56,7 +48,7 @@
 		                					</div><!-- End .col-sm-6 -->
 
 		                					<div class="col-sm-6">
-		                						<label>State / County *</label>
+		                						<label>County *</label>
 		                						<input type="text" class="form-control" required>
 		                					</div><!-- End .col-sm-6 -->
 		                				</div><!-- End .row -->

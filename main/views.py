@@ -94,7 +94,8 @@ def cart_detail(request):
 
 
 def checkout(request):
-    return render(request, 'main/')
+    context = {}
+    return render(request, 'main/checkout.html', context)
 
 
 def add_item(request, prod_id, quantity):
