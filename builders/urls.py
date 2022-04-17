@@ -22,3 +22,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('summernote/', include('django_summernote.urls'))
 ]
+
+handler404 = 'main.views.page_not_found_view'

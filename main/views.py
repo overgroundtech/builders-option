@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from cart.cart import Cart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.contrib.messages import info, error
+from django.contrib.messages import info
 from django.contrib.auth.decorators import login_required
 from .models import *
+
+
+def page_not_found_view(request, exception):
+    return render(request, 'main/404.html', status=404)
 
 
 def index(request):
@@ -144,6 +148,7 @@ def checkout(request):
                 email=email
             )
             bill_add.save()
+
 
     return render(request, 'main/checkout.html', context)
 
