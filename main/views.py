@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from cart.cart import Cart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
 from django.db.models import Q
 from django.contrib.messages import info, error
+from django.contrib.auth.decorators import login_required
 from .models import *
 
 
@@ -93,8 +95,26 @@ def cart_detail(request):
     return render(request, 'main/cart.html', context)
 
 
+@login_required(login_url='/users/sign-in')
 def checkout(request):
-    context = {}
+    cats = Category.objects.all()
+    cart = Cart(request)
+
+    context = {
+        "cart": cart,
+        "categories": cats
+    }
+
+    user = request.user
+
+    if request.POST:
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        town = request.POST['town']
+        county = request.POST['county']
+        phone = request.POST['phone']
+        email = request.POST['email']
+
     return render(request, 'main/checkout.html', context)
 
 

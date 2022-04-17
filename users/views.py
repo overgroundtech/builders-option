@@ -1,9 +1,14 @@
-from django.shortcuts import redirect, HttpResponseRedirect
+from django.shortcuts import redirect, HttpResponseRedirect, render
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.messages import info, error
+from django.core.cache import cache
+from main.models import Category
+from cart.cart import Cart
 
 
 def sign_in(request):
+    if request.method == "GET":
+        cache.set('next', request.GET.get('next', None))
 
     if request.method == "POST":
         username = request.POST['singin-email']
@@ -16,13 +21,18 @@ def sign_in(request):
 
         if user is not None:
             login(request, user)
-            next_url = request.GET.get('next')
-            info(request, f'login is as {user.username}')
-            return HttpResponseRedirect(next_url) if next_url is not None else redirect('home')
+            info(request, 'log')
+            next_url = cache.get('next')
+            if next_url:
+                cache.delete('next')
+                return HttpResponseRedirect(next_url)
         else:
-            error(request, 'login failed')
+            error(request, 'invalid username or password')
 
-    return redirect('home')
+    return render(request, 'main/auth.html', context={
+        "cart": Cart(request),
+        "categories": Category.objects.all()
+    })
 
 
 def sign_up(request):
@@ -43,7 +53,11 @@ def sign_up(request):
             login(request, user)
         else:
             error(request, 'passwords did not match')
-    return redirect('home')
+    else:
+        return render(request, 'main/auth.html', context={
+            "cart": Cart(request),
+            "categories": Category.objects.all()
+        })
 
 
 def sign_out(request):

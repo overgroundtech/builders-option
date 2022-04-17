@@ -53,7 +53,9 @@ class BillingAddress(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=100)
     county = models.CharField(max_length=100)
+    town = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
 
@@ -68,6 +70,12 @@ class Order(models.Model):
     total_price = models.FloatField()
     payment = models.CharField(max_length=100)
     paid = models.BooleanField(default=False)
+    notes = models.TextField()
+    status = models.CharField(max_length=20, choices=(
+        ('pending', 'pending'),
+        ('transit', 'transit'),
+        ('delivered', 'delivered')
+    ))
     made_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
