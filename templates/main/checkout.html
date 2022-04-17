@@ -18,17 +18,60 @@
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
-        {% if user.is_authenticated %}
             <div class="page-content">
             	<div class="checkout">
 	                <div class="container">
             			<div class="checkout-discount">
             			</div><!-- End .checkout-discount -->
-            			<form action="{% url 'sign-in' %}" method="post">
+            			<form action="{% url 'checkout' %}" method="post">
                         {% csrf_token %}
 		                	<div class="row">
 		                		<div class="col-lg-9">
-		                			<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+		                			{% if billing_address %}
+                                        <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+		                				<div class="row">
+		                					<div class="col-sm-6">
+		                						<label>First Name *</label>
+		                						<input type="text" class="form-control" name="firstname" value="{{ billing_address.firstname }}" required>
+		                					</div><!-- End .col-sm-6 -->
+
+		                					<div class="col-sm-6">
+		                						<label>Last Name *</label>
+		                						<input type="text" class="form-control" name="lastname" value="{{ billing_address.lastname }}" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+
+	            						<div class="row">
+		                					<div class="col-sm-6">
+		                						<label>Town / City *</label>
+		                						<input type="text" class="form-control" name="town" value="{{ billing_address.town }}" required>
+		                					</div><!-- End .col-sm-6 -->
+
+		                					<div class="col-sm-6">
+		                						<label>County *</label>
+		                						<input type="text" class="form-control" name="county" value="{{ billing_address.county }}" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+
+		                				<div class="row">
+		                					<div class="col-sm-6">
+		                						<label>Postcode / ZIP *</label>
+		                						<input type="text" class="form-control" name="postcode" value="{{ billing_address.postcode }}" required>
+		                					</div><!-- End .col-sm-6 -->
+
+		                					<div class="col-sm-6">
+		                						<label>Phone *</label>
+		                						<input type="tel" class="form-control" name="phone" value="{{ billing_address.phone }}" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+
+	                					<label>Email address *</label>
+	        							<input type="email" class="form-control" name="email" value="{{ billing_address.email }}" required>
+
+	                					<label>Order notes (optional)</label>
+	        							<textarea class="form-control" cols="30" name="notes" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                                    {% else %}
+                                        <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
 		                				<div class="row">
 		                					<div class="col-sm-6">
 		                						<label>First Name *</label>
@@ -68,14 +111,9 @@
 	                					<label>Email address *</label>
 	        							<input type="email" class="form-control" name="email" required>
 
-	        							<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="checkout-create-acc">
-											<label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
-										</div><!-- End .custom-checkbox -->
-
-
 	                					<label>Order notes (optional)</label>
-	        							<textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+	        							<textarea class="form-control" cols="30" name="notes" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                                    {% endif %}
 		                		</div><!-- End .col-lg-9 -->
 
 		                		<aside class="col-lg-3">
@@ -105,32 +143,19 @@
 		                				</table><!-- End .table table-summary -->
 
 		                				<div class="accordion-summary" id="accordion-payment">
-										    <div class="card">
-										        <div class="card-header" id="heading-3">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-										                    Cash on delivery
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
 
 										    <div class="card">
 										        <div class="card-header" id="heading-4">
 										            <h2 class="card-title">
 										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-										                    M-pesa <small class="float-right paypal-link">What is M-pesa?</small>
+										                    M-pesa <small class="float-right paypal-link">confirm?</small>
 										                </a>
 										            </h2>
 										        </div><!-- End .card-header -->
 										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-										            </div><!-- End .card-body -->
+                                                    <div class="card-body">
+
+                                                    </div><!-- End .card-body -->
 										        </div><!-- End .collapse -->
 										    </div><!-- End .card -->
 
@@ -148,13 +173,6 @@
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
             </div><!-- End .page-content -->
-        {% else %}
-            <script>
-                let loginLink = document.getElementById('login-link')
-                loginLink.click()
-            </script>
-            {% include 'partials/auth-modal.html' %}
-        {% endif %}
-        </main><!-- End .main -->
+
 
 {% endblock %}

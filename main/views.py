@@ -105,12 +105,12 @@ def checkout(request):
     }
 
     user = request.user
-    if request.GET:
-        try:
-            bill_add = BillingAddress.objects.get(user_id=user.id)
-            context['billing_address'] = bill_add
-        except BillingAddress.DoesNotExist:
-            context['billing_address'] = None
+
+    try:
+        bill_add = BillingAddress.objects.get(user_id=user.id)
+        context['billing_address'] = bill_add
+    except BillingAddress.DoesNotExist:
+        context['billing_address'] = None
 
     if request.POST:
         firstname = request.POST['firstname']
@@ -120,6 +120,7 @@ def checkout(request):
         postcode = request.POST['postcode']
         phone = request.POST['phone']
         email = request.POST['email']
+        notes = request.POST['notes']
 
         try:
             bill_add = BillingAddress.objects.get(user_id=user.id)
