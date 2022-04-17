@@ -68,9 +68,9 @@ class Order(models.Model):
     customer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     order_id = models.CharField(default=uuid.uuid4(), max_length=100)
     total_price = models.FloatField()
-    payment = models.CharField(max_length=100)
+    payment = models.CharField(max_length=100, blank=True, null=True)
     paid = models.BooleanField(default=False)
-    notes = models.TextField()
+    notes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=(
         ('pending', 'pending'),
         ('transit', 'transit'),

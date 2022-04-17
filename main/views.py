@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 
 
-def server_error(request, exception):
+def handler500(request):
     return render(request, 'main/500.html', status=500)
 
 
@@ -140,6 +140,7 @@ def checkout(request):
             bill_add.email = email
             bill_add.phone = phone
             bill_add.save()
+
         except BillingAddress.DoesNotExist:
             bill_add = BillingAddress(
                 user=user,
@@ -152,8 +153,23 @@ def checkout(request):
                 email=email
             )
             bill_add.save()
-
-
+        order = Order(
+            billing_address=bill_add,
+            customer=user,
+            total_price=cart.summary(),
+            status='pending'
+        )
+        order.save()
+        for item in cart:
+            order_item = OrderItem(
+                order=order,
+                product=item.product,
+                unit_price=item.unit_price,
+                total_price=item.unit_price,
+                quantity=item.quantity
+            )
+            order.save()
+        # cart.clear()
     return render(request, 'main/checkout.html', context)
 
 
