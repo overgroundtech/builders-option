@@ -21,7 +21,7 @@ def sign_in(request):
 
         if user is not None:
             login(request, user)
-            info(request, 'log')
+            info(request, f'logged in as {user.username}')
             next_url = cache.get('next')
             if next_url:
                 cache.delete('next')

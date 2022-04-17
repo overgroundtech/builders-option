@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from cart.cart import Cart
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.cache import cache
 from django.db.models import Q
 from django.contrib.messages import info, error
 from django.contrib.auth.decorators import login_required
@@ -106,14 +105,44 @@ def checkout(request):
     }
 
     user = request.user
+    if request.GET:
+        try:
+            bill_add = BillingAddress.objects.get(user_id=user.id)
+            context['billing_address'] = bill_add
+        except BillingAddress.DoesNotExist:
+            context['billing_address'] = None
 
     if request.POST:
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         town = request.POST['town']
         county = request.POST['county']
+        postcode = request.POST['postcode']
         phone = request.POST['phone']
         email = request.POST['email']
+
+        try:
+            bill_add = BillingAddress.objects.get(user_id=user.id)
+            context['billing_address'] = bill_add
+            bill_add.firstname = firstname
+            bill_add.lastname = lastname
+            bill_add.county = county
+            bill_add.town = town
+            bill_add.email = email
+            bill_add.phone = phone
+            bill_add.save()
+        except BillingAddress.DoesNotExist:
+            bill_add = BillingAddress(
+                user=user,
+                firstname=firstname,
+                lastname=lastname,
+                postcode=postcode,
+                town=town,
+                county=county,
+                phone=phone,
+                email=email
+            )
+            bill_add.save()
 
     return render(request, 'main/checkout.html', context)
 
