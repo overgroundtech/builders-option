@@ -168,7 +168,7 @@ def checkout(request):
                 total_price=item.unit_price,
                 quantity=item.quantity
             )
-            order.save()
+            order_item.save()
         # cart.clear()
     return render(request, 'main/checkout.html', context)
 

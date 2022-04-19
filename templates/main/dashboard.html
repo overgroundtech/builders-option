@@ -3,16 +3,15 @@
 
 {% block content %}
         <main class="main">
-            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="page-header text-center" style="background-image: url({% static 'assets/images/page-header-bg.jpg' %})">
                 <div class="container">
-                    <h1 class="page-title">My Account<span>Shop</span></h1>
+                    <h1 class="page-title">My Account<span>Welcome {{ user.username }}</span></h1>
                 </div><!-- End .container -->
             </div><!-- End .page-header -->
             <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">My Account</li>
                     </ol>
                 </div><!-- End .container -->
@@ -39,7 +38,7 @@
                                         <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Sign Out</a>
+                                        <a class="nav-link" href="{% url 'sign-out' %}">Sign Out</a>
                                     </li>
                                 </ul>
                             </aside><!-- End .col-lg-3 -->
@@ -47,61 +46,66 @@
                             <div class="col-md-8 col-lg-9">
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                                        <p>Hello <span class="font-weight-normal text-dark">User</span> (not <span class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>)
+                                        <p>Hello <span class="font-weight-normal text-dark">{{ user.username }}</span> (not <span class="font-weight-normal text-dark">{{ user.username }}</span>? <a href="{% url 'sign-out' %}">Log out</a>)
                                         <br>
-                                        From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit your password and account details</a>.</p>
+                                        From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">billing addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit your password and account details</a>.</p>
                                     </div><!-- .End .tab-pane -->
 
                                     <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
-                                        <p>No order has been made yet.</p>
-                                        <div class="col-lg-9">
+                                        {% if not orders %}
+                                            <p>No order has been made yet.</p>
+                                        {% else %}
+
+                                        <div class="col-lg-12">
+
                                             <table class="table table-cart table-mobile">
                                                 <thead>
                                                     <tr>
                                                         <th>Product</th>
                                                         <th>Price</th>
+                                                        <th>Quantity</th>
                                                         <th>Total</th>
+                                                        <th>Status</th>
+                                                        <th>Order_id</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
+                                                    {% for order_item in order_items %}
                                                     <tr>
                                                         <td class="product-col">
                                                             <div class="product">
                                                                 <figure class="product-media">
-                                                                    <a href="#">
-                                                                        <img src="assets/images/products/table/product-1.jpg" alt="Product image">
+                                                                    <a href="{% url 'products' order_item.product.get_url %}">
+                                                                        <img src="{{ order_item.product.display_image }}" alt="{{ order_item.product }}">
                                                                     </a>
                                                                 </figure>
 
                                                                 <h3 class="product-title">
-                                                                    <a href="#">Beige knitted elastic runner shoes</a>
+                                                                    <a href="{% url 'products' order_item.product.get_url %}">{{ order_item.product }}</a>
                                                                 </h3><!-- End .product-title -->
                                                             </div><!-- End .product -->
                                                         </td>
-                                                        <td class="price-col">$84.00</td>
-
-                                                        <td class="total-col">$84.00</td>
-                                                        <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                                                        <td class="price-col">ksh {{ order_item.unit_price }}</td>
+                                                        <td class="price-col">{{ order_item.quantity }}</td>
+                                                        <td class="price-col">ksh {{ order_item.total_price }}</td>
+                                                        <td class="total-col">{{ order_item.order.status }}</td>
+                                                        <td class="total-col">{{ order_item.order.id }}</td>
                                                     </tr>
-
+                                                    {% endfor %}
                                                 </tbody>
                                             </table><!-- End .table table-wishlist -->
+                                        </div><!-- End .col-lg-9 -->
 
-
-                                        </div><!-- End .col-lg-9 -->                                    </div><!-- .End .tab-pane -->
-
-                                    <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
-                                        <p>No downloads available yet.</p>
-                                        <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                                        {% endif %}
                                     </div><!-- .End .tab-pane -->
 
                                     <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
                                         <p>The following addresses will be used on the checkout page by default.</p>
 
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-8">
                                                 <div class="card card-dashboard">
                                                     <div class="card-body">
                                                         <h3 class="card-title">Billing Address</h3><!-- End .card-title -->
@@ -117,16 +121,17 @@
                                                 </div><!-- End .card-dashboard -->
                                             </div><!-- End .col-lg-6 -->
 
-                                            <div class="col-lg-6">
-                                                <div class="card card-dashboard">
-                                                    <div class="card-body">
-                                                        <h3 class="card-title">Shipping Address</h3><!-- End .card-title -->
+{#                                            <div class="col-lg-6">#}
+{#                                                <div class="card card-dashboard">#}
+{#                                                    <div class="card-body">#}
+{#                                                        <h3 class="card-title">Shipping Address</h3><!-- End .card-title -->#}
+{##}
+{#                                                        <p>You have not set up this type of address yet.<br>#}
+{#                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>#}
+{#                                                    </div><!-- End .card-body -->#}
+{#                                                </div><!-- End .card-dashboard -->#}
+{#                                            </div><!-- End .col-lg-6 -->#}
 
-                                                        <p>You have not set up this type of address yet.<br>
-                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>
-                                                    </div><!-- End .card-body -->
-                                                </div><!-- End .card-dashboard -->
-                                            </div><!-- End .col-lg-6 -->
                                         </div><!-- End .row -->
                                     </div><!-- .End .tab-pane -->
 

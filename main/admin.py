@@ -59,7 +59,7 @@ class OrderItemAdmin(admin.TabularInline):
     extra = 0
 
     def has_add_permission(self, request, obj):
-        return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -68,7 +68,7 @@ class OrderItemAdmin(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('made_on', 'customer', 'paid', 'payment', 'status',)
-    ordering = ('made_on', 'paid',)
+    ordering = ('-made_on',)
     list_filter = ('paid', 'status')
     inlines = [OrderItemAdmin]
     readonly_fields = ('made_on', 'customer', 'paid', 'payment', 'billing_address', 'order_id', 'notes', 'total_price')

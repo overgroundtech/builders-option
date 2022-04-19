@@ -15,7 +15,7 @@
                             <ul>
                                 {% if user.is_authenticated %}
                                     <li><a href="{% url 'sign-out' %}">Sign Out</a></li>
-                                    <li><a href="#">My Account</a> </li>
+                                    <li><a href="{% url 'dashboard' %}">My Account</a> </li>
                                 {% else %}
                                     <li><a href="#signin-modal" id="login-link" data-toggle="modal">Sign in / Sign up</a></li>
                                 {% endif %}

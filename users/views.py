@@ -2,7 +2,8 @@ from django.shortcuts import redirect, HttpResponseRedirect, render
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.messages import info, error
 from django.core.cache import cache
-from main.models import Category
+from django.contrib.auth.decorators import login_required
+from main.models import Category, Order, OrderItem
 from cart.cart import Cart
 
 
@@ -26,6 +27,7 @@ def sign_in(request):
             if next_url:
                 cache.delete('next')
                 return HttpResponseRedirect(next_url)
+            return redirect('home')
         else:
             error(request, 'invalid username or password')
 
@@ -63,3 +65,16 @@ def sign_up(request):
 def sign_out(request):
     logout(request)
     return redirect('home')
+
+
+@login_required(login_url='sign-in')
+def dashboard(request):
+    user = request.user
+    orders = Order.objects.filter(customer_id=user.id)
+    order_items = [order_item for order in orders for order_item in OrderItem.objects.filter(order=order)]
+
+    context = {
+        "orders": orders,
+        "order_items": order_items
+    }
+    return render(request, 'main/dashboard.html', context)
