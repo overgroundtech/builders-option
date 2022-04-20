@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %} Search results for {{query}} {% endblock %}
+
 {% block content %}
     {% include 'partials/nav.html' %}
         <main class="main">
