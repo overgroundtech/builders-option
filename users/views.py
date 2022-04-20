@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.messages import info, error
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
-from main.models import Category, Order, OrderItem
+from main.models import Category, Order, OrderItem, BillingAddress
 from cart.cart import Cart
 
 
@@ -72,9 +72,70 @@ def dashboard(request):
     user = request.user
     orders = Order.objects.filter(customer_id=user.id)
     order_items = [order_item for order in orders for order_item in OrderItem.objects.filter(order=order)]
+    billing_address = BillingAddress.objects.get(user_id=user.id)
 
     context = {
         "orders": orders,
-        "order_items": order_items
+        "order_items": order_items,
+        "billing_address": billing_address
     }
     return render(request, 'main/dashboard.html', context)
+
+
+def edit_billing_address(request):
+    if request.method == "POST":
+        user = request.user
+
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        postcode = request.POST['postcode']
+        town = request.POST['phone']
+        county = request.POST['county']
+        email = request.POST['email']
+
+        try:
+            billing_address = BillingAddress.objects.get(user_id=user.id)
+            billing_address.firstname = firstname
+            billing_address.lastname = lastname
+            billing_address.postcode = postcode
+            billing_address.town = town
+            billing_address.email = email
+            billing_address.save()
+            info(request, 'Your billing address has been updated')
+        except BillingAddress.DoesNotExist:
+            billing_address = BillingAddress(
+                user_id=user.id,
+                firstname=firstname,
+                lastname=lastname,
+                postcode=postcode,
+                town=town,
+                county=county,
+                email=email
+            )
+            billing_address.save()
+            info(request, 'Your billing address has been created')
+            return redirect(request.GET.get('next'))
+    return redirect('dashboard')
+
+
+def edit_account(request):
+    if request.POST:
+        user = request.user
+
+        email = request.POST['email']
+        current_password = request.POST['current-password']
+        new_password = request.POST['new-password']
+        new_password1 = request.POST['new-password1']
+
+        user.email = email if email else user.email
+        if current_password and new_password and new_password1:
+            user_obj = authenticate(username=user.username, password=current_password)
+            user = get_user_model().objects.get(pk=user_obj.id)
+            if new_password == new_password1:
+                user.set_password(new_password)
+                user.save()
+                info(request, 'account updated')
+                return redirect(request.GET.get('next')) if request.GET.get('next') else redirect('dashboard')
+            else:
+                error(request, 'account update failed')
+    return redirect('dashboard')
