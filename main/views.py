@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.messages import info
 from django.contrib.auth.decorators import login_required
 from .models import *
+from payments.mpesa import stk_push
 
 
 def handler500(request):
@@ -170,6 +171,13 @@ def checkout(request):
             )
             order_item.save()
         # cart.clear()
+        mpesa_res = stk_push(order, bill_add)
+        if mpesa_res == True:
+            info(request, 'mpesa payment initiated')
+            return redirect('checkout')
+        else:
+            return redirect('checkout')
+
     return render(request, 'main/checkout.html', context)
 
 

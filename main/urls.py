@@ -9,6 +9,8 @@ urlpatterns = [
     path('search', views.search, name="search"),
     path('products/<str:product_url>', views.product_detail, name="products"),
     path('categries/<str:category_url>', views.categories, name="categories"),
+    path('about', views.about, name='about'),
+    
     # cart urls
     path('cart', views.cart_detail, name="cart"),
     path('cart/add_item/<str:prod_id>/<int:quantity>', views.add_item, name="add-item"),

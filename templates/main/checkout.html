@@ -156,7 +156,22 @@
 										        </div><!-- End .card-header -->
 										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
                                                     <div class="card-body">
+														<figure class="footer-payments">
+															<img src="{% static 'assets/images/lipanampesa.png' %}" alt="lipanampesa" width="272" height="10">
+														</figure><!-- End .footer-payments -->
+														<div>
 
+															<p>A mpesa payment prompt will be sent to 
+																{% if billing_address %}
+																{{ billing_address.phone }}
+																{% else %}
+																phone number in the billing address
+																{% endif %}
+															</p>
+															
+														</div>
+															
+														</div>
                                                     </div><!-- End .card-body -->
 										        </div><!-- End .collapse -->
 										    </div><!-- End .card -->

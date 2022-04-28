@@ -5,6 +5,9 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 from main.models import Category, Order, OrderItem, BillingAddress
 from cart.cart import Cart
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def sign_in(request):
@@ -31,7 +34,7 @@ def sign_in(request):
         else:
             error(request, 'invalid username or password')
 
-    return render(request, 'main/auth.html', context={
+    return render(request, 'users/auth.html', context={
         "cart": Cart(request),
         "categories": Category.objects.all()
     })
@@ -56,7 +59,7 @@ def sign_up(request):
         else:
             error(request, 'passwords did not match')
     else:
-        return render(request, 'main/auth.html', context={
+        return render(request, 'users/auth.html', context={
             "cart": Cart(request),
             "categories": Category.objects.all()
         })
@@ -139,3 +142,7 @@ def edit_account(request):
             else:
                 error(request, 'account update failed')
     return redirect('dashboard')
+
+
+class ResetPasswordView:
+    pass

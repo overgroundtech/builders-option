@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import ResetPasswordView
 
 urlpatterns = [
     path('sign-in', views.sign_in, name="sign-in"),
@@ -8,4 +9,6 @@ urlpatterns = [
     path('edit-billing-address', views.edit_billing_address, name='edit-billing-address'),
     path('edit-account-details', views.edit_account, name='edit-account-details'),
     path('sign-out', views.sign_out, name="sign-out"),
+    # reset password
+    path('reset-password', views.ResetPasswordView, name='reset-password')
 ]

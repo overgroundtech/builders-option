@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w4mv%q8uyrhs3e%5_fezgqzyp%@frojp)n#ckx0u6brq86i#-!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my apps
     'cart',
     'main.apps.MainConfig',
+    'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'django_summernote'
 ]
@@ -135,6 +136,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
 
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode, default
