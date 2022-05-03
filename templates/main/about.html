@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %} About us {% endblock %}
 {% block content %}
-
+{% include 'partials/nav.html' %}
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="page-header text-center" style="background-image: url({% static 'assets/images/page-header-bg.jpg' %})">
         <div class="container">
-            <h1 class="page-title">About us 2<span>Pages</span></h1>
+            <h1 class="page-title">About us<span></span></h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active" aria-current="page">About us 2</li>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">About us </li>
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -26,9 +26,9 @@
                     <div class="about-text text-center mt-3">
                         <h2 class="title text-center mb-2">Who We Are</h2><!-- End .title text-center mb-2 -->
                         <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti. Sed egestas, ante et vulputate volutpat, uctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. </p>
-                        <img src="assets/images/about/about-2/signature.png" alt="signature" class="mx-auto mb-5">
+                        <img src="{% static 'assets/images/about/about-2/signature.png' %}" alt="signature" class="mx-auto mb-5">
 
-                        <img src="assets/images/about/about-2/img-1.jpg" alt="image" class="mx-auto mb-6">
+                        <img src="{% static 'assets/images/about/about-2/img-1.jpg' %}" alt="image" class="mx-auto mb-6">
                     </div><!-- End .about-text -->
                 </div><!-- End .col-lg-10 offset-1 -->
             </div><!-- End .row -->

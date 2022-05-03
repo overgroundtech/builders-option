@@ -41,14 +41,14 @@ def index(request):
 
 
 def product_detail(request, product_url):
-    pk = product_url[(product_url.rindex('~')+1):]
+    pk = product_url[(product_url.rindex('~') + 1):]
     prod = Product.objects.get(pk=pk)
     images = ProductImages.objects.filter(product=pk)
     similar_products = Product.objects.filter(categories__in=prod.categories.all()).distinct()
 
     cats = Category.objects.all()
     cart = Cart(request)
-# TODO add reviews functionality and social media share
+    # TODO add reviews functionality and social media share
     context = {
         "images": images,
         "product": prod,
@@ -92,10 +92,9 @@ def categories(request, category_url):
 
 
 def cart_detail(request):
-
     cats = Category.objects.all()
     cart = Cart(request)
-#   Todo create ajax request for updating cart
+    #   Todo create ajax request for updating cart
     context = {
         "cart": cart,
         "categories": cats,
@@ -172,9 +171,10 @@ def checkout(request):
             order_item.save()
         # cart.clear()
         mpesa_res = stk_push(order, bill_add)
-        if mpesa_res == True:
+
+        if mpesa_res:
             info(request, 'mpesa payment initiated')
-            return redirect('checkout')
+            return redirect('callback')
         else:
             return redirect('checkout')
 
@@ -233,4 +233,6 @@ def search(request):
         return render(request, 'main/search.html', context)
 
 
-
+def about(request):
+    context = {}
+    return render(request, 'main/about.html', context)
