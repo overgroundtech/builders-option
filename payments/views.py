@@ -15,10 +15,11 @@ def callback(request):
     user = request.user
     order = Order.objects.filter(customer_id=user.id).first()
     data = json.loads(request.body)
+    print(data)
     stk_results = data["Body"]["stkCallback"]
-    if int(stk_results["ResultCode"]) != 0:
+    if int(stk_results["ResultCode"]) == 0:
         error(request, stk_results["RequestDesc"])
         return redirect('checkout')
     else:
-        pass
+        print('name')
     return HttpResponse('hello')
