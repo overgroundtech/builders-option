@@ -51,13 +51,13 @@ class ProductImages(models.Model):
 
 class BillingAddress(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    postcode = models.CharField(max_length=100)
-    county = models.CharField(max_length=100)
-    town = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    firstname = models.CharField(max_length=100, blank=True, null=True)
+    lastname = models.CharField(max_length=100, blank=True, null=True)
+    postcode = models.CharField(max_length=100, blank=True, null=True)
+    county = models.CharField(max_length=100, blank=True, null=True)
+    town = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username}\'billing address'
