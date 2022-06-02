@@ -47,6 +47,10 @@ def sign_up(request):
         password = request.POST["register-password"]
         password1 = request.POST["register-password1"]
 
+        if get_user_model().objects.filter(username=username).exists():
+            info(request, 'username already in use')
+            return redirect('sign-up')
+
         if password == password1:
             user = get_user_model().objects.create_user(
                 username=username,
@@ -56,8 +60,10 @@ def sign_up(request):
             user.save()
             info(request, 'registered successfully')
             login(request, user)
+            return redirect('home')
         else:
             error(request, 'passwords did not match')
+            return redirect('sign-up')
     else:
         return render(request, 'users/auth.html', context={
             "cart": Cart(request),
@@ -75,14 +81,14 @@ def dashboard(request):
     user = request.user
     orders = Order.objects.filter(customer_id=user.id)
     order_items = [order_item for order in orders for order_item in OrderItem.objects.filter(order=order)]
-    billing_address = BillingAddress.objects.get(user_id=user.id)
+    billing_address = BillingAddress.objects.get_or_create(user_id=user.id)
 
     context = {
         "orders": orders,
         "order_items": order_items,
         "billing_address": billing_address
     }
-    return render(request, 'main/dashboard.html', context)
+    return render(request, 'users/dashboard.html', context)
 
 
 def edit_billing_address(request):
@@ -96,28 +102,16 @@ def edit_billing_address(request):
         county = request.POST['county']
         email = request.POST['email']
 
-        try:
-            billing_address = BillingAddress.objects.get(user_id=user.id)
-            billing_address.firstname = firstname
-            billing_address.lastname = lastname
-            billing_address.postcode = postcode
-            billing_address.town = town
-            billing_address.email = email
-            billing_address.save()
-            info(request, 'Your billing address has been updated')
-        except BillingAddress.DoesNotExist:
-            billing_address = BillingAddress(
-                user_id=user.id,
-                firstname=firstname,
-                lastname=lastname,
-                postcode=postcode,
-                town=town,
-                county=county,
-                email=email
-            )
-            billing_address.save()
-            info(request, 'Your billing address has been created')
-            return redirect(request.GET.get('next'))
+        billing_address = BillingAddress.objects.get(user_id=user.id)
+        billing_address.firstname = firstname
+        billing_address.lastname = lastname
+        billing_address.postcode = postcode
+        billing_address.county = county
+        billing_address.town = town
+        billing_address.email = email
+        billing_address.save()
+        info(request, 'Your billing address has been updated')
+
     return redirect('dashboard')
 
 
