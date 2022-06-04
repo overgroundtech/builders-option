@@ -81,12 +81,14 @@ def dashboard(request):
     user = request.user
     orders = Order.objects.filter(customer_id=user.id)
     order_items = [order_item for order in orders for order_item in OrderItem.objects.filter(order=order)]
-    billing_address = BillingAddress.objects.get(user_id=user.id)
+    billing_address, created = BillingAddress.objects.get_or_create(user_id=user.id)
 
     context = {
         "orders": orders,
         "order_items": order_items,
-        "billing_address": billing_address
+        "billing_address": billing_address,
+        "cart": Cart(request),
+        "categories": Category.objects.all()
     }
     return render(request, 'users/dashboard.html', context)
 
