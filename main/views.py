@@ -174,7 +174,7 @@ def checkout(request):
 
         if mpesa_res:
             info(request, 'mpesa payment initiated')
-            return redirect('callback')
+            return redirect('home')
         else:
             return redirect('checkout')
 

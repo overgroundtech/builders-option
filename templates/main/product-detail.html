@@ -65,9 +65,9 @@
 
                                         <div class="details-action-wrapper">
                                             {% if product.in_stock > 1 %}
-                                                <p> in stock <span class="active"></span></p>
+                                                <p class="text-success"> in stock <span class="active"></span></p>
                                             {% else %}
-                                                <p> in stock <span class="alert-danger"></span></p>
+                                                <p> out of stock <span class="alert-danger"></span></p>
                                             {% endif %}
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
@@ -76,16 +76,10 @@
                                         <div class="product-cat">
                                             <span>Category:</span>
                                             {% for category in product.categories.all %}
-                                                <a href="#">{{ category }}</a>,
+                                                <a href="{{ category.get_url }}">{{ category }}</a>,
                                             {% endfor %}
                                         </div><!-- End .product-cat -->
 
-                                        <div class="social-icons social-icons-sm">
-                                            <span class="social-label">Share:</span>
-                                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                                            <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                                            <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                                        </div>
                                     </div><!-- End .product-details-footer -->
                                 </div><!-- End .col-md-6 -->
                             </div><!-- End .row -->
