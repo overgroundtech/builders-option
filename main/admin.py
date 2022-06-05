@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@kimitaWanjohi 
-overgroundtech
-/
-builders-option
-Private
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-builders-option/main/admin.py /
-
-kimita user dash board
-…
-Latest commit 049677d on Apr 19
- History
- 0 contributors
-97 lines (75 sloc)  2.64 KB
-  
 from django.contrib import admin
 from django_summernote.models import Attachment
 from .models import Product, Category, Order, OrderItem, BillingAddress, ProductImages
