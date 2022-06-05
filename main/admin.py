@@ -95,17 +95,3 @@ class BillingAddress(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete Octotree
- Login with GitHub
