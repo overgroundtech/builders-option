@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w4mv%q8uyrhs3e%5_fezgqzyp%@frojp)n#ckx0u6brq86i#-!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io']
+ALLOWED_HOSTS = ['143.110.242.208','143.110.242.208']
 CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io']
 
 # Application definition
@@ -125,7 +125,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
+    '/home/kimita/builders-option/env/lib/python3.8/site-packages/django/contrib/admin/static'
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
